@@ -16,11 +16,12 @@ def get_html(url):
 
 
 class HowToStep:
-    def __init__(self, number, summary=None, description=None, picture=None):
+    def __init__(self, number, summary=None, description=None, picture=None, html=""):
         self._number = number
         self._summary = summary
         self._description = description
         self._picture = picture
+        self.html = html
 
     @property
     def number(self):
@@ -52,9 +53,10 @@ class HowToStep:
 
 class HowTo:
     def __init__(self, url="http://www.wikihow.com/Special:Randomizer",
-                 lazy=True):
+                 lazy=True, html=""):
         self._url = url
         self._title = None
+        self._html = html
         self._intro = None
         self._steps = []
         self._parsed = False
@@ -179,7 +181,7 @@ class HowTo:
 
     def _parse(self):
         try:
-            html = get_html(self._url)
+            html = self.html
             soup = bs4.BeautifulSoup(html, 'html.parser')
             self._parse_title(soup)
             self._parse_intro(soup)
